@@ -1,0 +1,22 @@
+services:
+  web:
+    build:
+      context: ../frontend/web
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+
+  app:
+    build:
+      context: ../backend/FlyCheap.App/FlyCheap.API
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

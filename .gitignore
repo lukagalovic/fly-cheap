@@ -34,7 +34,7 @@ obj/
 
 # ASP.NET
 wwwroot/
-appsettings*.json
+# appsettings*.json
 
 # IDE/editor directories and files
 .vscode/*
@@ -44,12 +44,12 @@ appsettings*.json
 *.suo
 *.ntvs*
 *.njsproj
-*.sln
+# *.sln
 *.swp
 
 # Environment files
-.env
-*.env.local
+#.env
+#*.env.local
 
 # OS-specific files
 Thumbs.db
