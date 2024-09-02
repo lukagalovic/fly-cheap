@@ -6,7 +6,8 @@ services:
     ports:
       - "3000:3000"
     networks:
-      - app-network
+      - frontend-network
+      - backend-network
 
   app:
     build:
@@ -15,8 +16,28 @@ services:
     ports:
       - "8080:8080"
     networks:
-      - app-network
+      - backend-network
+      - database-network
+
+  mysql:
+    image: mysql
+    env_file:
+      - ./.env
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - database-network
+
+volumes:
+  mysql-data:
+    driver: local
 
 networks:
-  app-network:
+  frontend-network:
+    driver: bridge
+  backend-network:
+    driver: bridge
+  database-network:
     driver: bridge
