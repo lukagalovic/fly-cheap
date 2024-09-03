@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FlyCheap.API.Data;
+using FlyCheap.API.Entities;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Net.Http;
 using System.Net.Http.Headers;
 
@@ -50,9 +53,9 @@ namespace FlyCheap.API.Controllers
                     }
                     else
                     {
-                        var errorContent = await response.Content.ReadAsStringAsync();
-                        _logger.LogError($"API Error: {response.StatusCode} - {errorContent}");
-                        return StatusCode((int)response.StatusCode, errorContent);
+                        var error = await response.Content.ReadAsStringAsync();
+                        _logger.LogError($"FlightController GetFlightDestinations: {response.StatusCode} - {error}");
+                        return StatusCode((int)response.StatusCode, error);
                     }
                 }
                 catch (Exception ex)
@@ -62,5 +65,20 @@ namespace FlyCheap.API.Controllers
                 }
             }
         }
+
+        //[HttpGet("airports")]
+        //public async Task<ActionResult<IEnumerable<Airport>>> TestAirports()
+        //{
+        //    try
+        //    {
+        //        var airports = await _ctx.Airports.Take(10).ToListAsync(); // Fetch all records from the Airports table
+        //        return Ok(airports); // Return the list of airports as JSON
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError($"Exception: {ex.Message}\nStackTrace: {ex.StackTrace}");
+        //        return StatusCode(500, "Internal server error");
+        //    }
+        //}
     }
 }
