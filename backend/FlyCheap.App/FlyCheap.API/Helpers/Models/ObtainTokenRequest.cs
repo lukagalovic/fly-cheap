@@ -1,8 +1,13 @@
-﻿namespace FlyCheap.API.Helpers.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace FlyCheap.API.Helpers.Models
 {
     public class ObtainTokenRequest
     {
-        public required string ClientId { get; set; }
-        public required string ClientSecret { get; set; }
+        [Required]
+        public string ClientId { get; set; }
+
+        [Required]
+        public string ClientSecret { get; set; }
     }
 }
