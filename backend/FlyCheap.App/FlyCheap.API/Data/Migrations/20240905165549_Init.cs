@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 using MySql.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
-namespace FlyCheap.API.Migrations
+namespace FlyCheap.API.Data.Migrations
 {
     /// <inheritdoc />
     public partial class Init : Migration
@@ -20,7 +21,7 @@ namespace FlyCheap.API.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Iata = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: false),
+                    Iata = table.Column<string>(type: "varchar(3)", maxLength: 3, nullable: false),
                     Icao = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: false),
                     Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
                     Latitude = table.Column<double>(type: "double", nullable: true),
@@ -40,6 +41,29 @@ namespace FlyCheap.API.Migrations
                     table.PrimaryKey("PK_Airports", x => x.Id);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "FlightSearchResults",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    OriginIata = table.Column<string>(type: "varchar(3)", maxLength: 3, nullable: false),
+                    DestinationIata = table.Column<string>(type: "varchar(3)", maxLength: 3, nullable: false),
+                    DepartureDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    ReturnDate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    OutboundTransfers = table.Column<int>(type: "int", nullable: false),
+                    ReturnTransfers = table.Column<int>(type: "int", nullable: true),
+                    NumberOfPassengers = table.Column<int>(type: "int", nullable: false),
+                    CurrencyCode = table.Column<string>(type: "longtext", nullable: false),
+                    TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FlightSearchResults", x => x.Id);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
         }
 
         /// <inheritdoc />
@@ -47,6 +71,9 @@ namespace FlyCheap.API.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Airports");
+
+            migrationBuilder.DropTable(
+                name: "FlightSearchResults");
         }
     }
 }

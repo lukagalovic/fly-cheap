@@ -3,16 +3,19 @@ using System;
 using FlyCheap.API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace FlyCheap.API.Migrations
+namespace FlyCheap.API.Data.Migrations
 {
     [DbContext(typeof(FlyCheapDbContext))]
-    partial class FlyCheapDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240905165549_Init")]
+    partial class Init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,8 +53,8 @@ namespace FlyCheap.API.Migrations
 
                     b.Property<string>("Iata")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("varchar(10)");
+                        .HasMaxLength(3)
+                        .HasColumnType("varchar(3)");
 
                     b.Property<string>("Icao")
                         .IsRequired()
@@ -92,6 +95,52 @@ namespace FlyCheap.API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Airports");
+                });
+
+            modelBuilder.Entity("FlyCheap.API.Entities.FlightSearchResult", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("CurrencyCode")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("DepartureDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("DestinationIata")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("varchar(3)");
+
+                    b.Property<int>("NumberOfPassengers")
+                        .HasColumnType("int");
+
+                    b.Property<string>("OriginIata")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("varchar(3)");
+
+                    b.Property<int>("OutboundTransfers")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ReturnDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int?>("ReturnTransfers")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FlightSearchResults");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,9 +1,11 @@
-import FlightSearchForm from "../components/FlightSearchForm/FlightSearchForm"
+import Flight from '../components/Flight/Flight';
 
 const FlightsPage = () => {
   return (
-    <div className="m-auto"><FlightSearchForm /></div>
-  )
-}
+    <div className="m-auto">
+      <Flight />
+    </div>
+  );
+};
 
-export default FlightsPage
+export default FlightsPage;

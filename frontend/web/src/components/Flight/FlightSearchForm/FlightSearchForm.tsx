@@ -1,15 +1,17 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
 import FlightSearchFormState from './FlightSearchFormState';
 
-const FlightSearchForm = () => {
+interface FlightSearchFormProps {
+  onSubmit: (formState: FlightSearchFormState) => void;
+}
+
+const FlightSearchForm = ({ onSubmit }: FlightSearchFormProps) => {
   const [formState, setFormState] = useState<FlightSearchFormState>({
     originLocationCode: '',
     destinationLocationCode: '',
     departureDate: '',
     returnDate: '',
     adults: 1,
-    children: undefined,
-    infants: undefined,
     currencyCode: 'EUR',
     maxPrice: undefined,
   });
@@ -27,69 +29,20 @@ const FlightSearchForm = () => {
     }));
   };
 
-  // Submission
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-
-    const {
-      originLocationCode,
-      destinationLocationCode,
-      departureDate,
-      returnDate,
-      adults,
-      children,
-      infants,
-      currencyCode,
-      maxPrice,
-    } = formState;
-
-    const queryParams = new URLSearchParams({
-      OriginLocationCode: originLocationCode,
-      DestinationLocationCode: destinationLocationCode,
-      DepartureDate: departureDate,
-      Adults: adults.toString(),
-      CurrencyCode: currencyCode,
-      ...(returnDate && { ReturnDate: returnDate }),
-      ...(children !== undefined && { Children: children.toString() }),
-      ...(infants !== undefined && { Infants: infants.toString() }),
-      ...(maxPrice !== undefined && { MaxPrice: maxPrice.toString() }),
-    });
-
-    try {
-      const response = await fetch(
-        `http://localhost:8080/flights?${queryParams.toString()}`,
-        {
-          method: 'GET',
-          headers: {
-            Authorization: 'Bearer YOUR_TOKEN_HERE',
-            'Content-Type': 'application/json',
-          },
-        },
-      );
-
-      if (response.ok) {
-        const data = await response.json();
-        console.log('API Response:', data);
-        // Handle successful response here
-      } else {
-        const errorData = await response.text();
-        console.error('Error:', errorData);
-        // Handle error response here
-      }
-    } catch (error) {
-      console.error('Exception:', error);
-      // Handle network error here
-    }
+    onSubmit(formState);
   };
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-indigo-500 p-6 rounded-md shadow-md max-w-4xl mx-auto"
+      className="bg-indigo-500 p-6 rounded-md shadow-md max-w-4xl mx-auto flex flex-col gap-4"
     >
       <h2 className="text-white text-2xl font-bold mb-4">Search Flights</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-        <div className="flex flex-col">
+
+      <div className="flex flex-wrap gap-4 mb-4">
+        <div className="flex-1 min-w-[150px]">
           <label
             htmlFor="originLocationCode"
             className="block text-white font-medium mb-1"
@@ -104,10 +57,10 @@ const FlightSearchForm = () => {
             onChange={handleChange}
             placeholder="Enter origin"
             required
-            className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
         </div>
-        <div className="flex flex-col">
+        <div className="flex-1 min-w-[150px]">
           <label
             htmlFor="destinationLocationCode"
             className="block text-white font-medium mb-1"
@@ -122,12 +75,10 @@ const FlightSearchForm = () => {
             onChange={handleChange}
             placeholder="Enter destination"
             required
-            className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
         </div>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-        <div className="flex flex-col">
+        <div className="flex-1 min-w-[150px]">
           <label
             htmlFor="departureDate"
             className="block text-white font-medium mb-1"
@@ -141,10 +92,10 @@ const FlightSearchForm = () => {
             value={formState.departureDate}
             onChange={handleChange}
             required
-            className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
         </div>
-        <div className="flex flex-col">
+        <div className="flex-1 min-w-[150px]">
           <label
             htmlFor="returnDate"
             className="block text-white font-medium mb-1"
@@ -157,12 +108,10 @@ const FlightSearchForm = () => {
             name="returnDate"
             value={formState.returnDate || ''}
             onChange={handleChange}
-            className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
         </div>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-        <div className="flex flex-col">
+        <div className="flex-1 min-w-[150px]">
           <label htmlFor="adults" className="block text-white font-medium mb-1">
             Adults:
           </label>
@@ -175,10 +124,10 @@ const FlightSearchForm = () => {
             min="1"
             max="9"
             required
-            className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
         </div>
-        <div className="flex flex-col">
+        <div className="flex-1 min-w-[150px]">
           <label
             htmlFor="currencyCode"
             className="block text-white font-medium mb-1"
@@ -191,16 +140,14 @@ const FlightSearchForm = () => {
             value={formState.currencyCode}
             onChange={handleChange}
             required
-            className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
           >
             <option value="USD">USD</option>
             <option value="EUR">EUR</option>
             <option value="CHF">CHF</option>
           </select>
         </div>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-        <div className="flex flex-col">
+        <div className="flex-1 min-w-[150px]">
           <label
             htmlFor="maxPrice"
             className="block text-white font-medium mb-1"
@@ -214,10 +161,11 @@ const FlightSearchForm = () => {
             value={formState.maxPrice || ''}
             onChange={handleChange}
             min="0"
-            className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
         </div>
       </div>
+
       <div className="flex justify-end">
         <button
           type="submit"

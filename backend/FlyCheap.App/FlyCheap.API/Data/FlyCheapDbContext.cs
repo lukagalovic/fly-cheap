@@ -10,6 +10,7 @@ namespace FlyCheap.API.Data
         }
 
         public DbSet<Airport> Airports { get; set; }
+        public DbSet<FlightSearchResult> FlightSearchResults { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

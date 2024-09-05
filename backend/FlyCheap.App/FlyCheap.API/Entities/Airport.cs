@@ -8,7 +8,7 @@ namespace FlyCheap.API.Entities
         public int Id { get; set; }
 
         [Required]
-        [StringLength(10)]
+        [StringLength(3)]
         public string Iata { get; set; }
 
         [StringLength(10)]

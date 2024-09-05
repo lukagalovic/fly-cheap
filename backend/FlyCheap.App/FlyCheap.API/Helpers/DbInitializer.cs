@@ -29,7 +29,7 @@ namespace FlyCheap.API.Helpers
                 {
                     if (!File.Exists(filePath))
                     {
-                        _logger.LogError($"File doesn't exist. Path: {filePath}");
+                        _logger.LogError($"File containing information about airports does not exist. Path: {filePath}");
                         throw new FileNotFoundException(filePath);
                     }
 

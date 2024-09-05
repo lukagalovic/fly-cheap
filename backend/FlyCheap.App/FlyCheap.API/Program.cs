@@ -1,6 +1,8 @@
 using FlyCheap.API.Data;
+using FlyCheap.API.Extensions;
 using FlyCheap.API.Helpers;
 using FlyCheap.API.Interfaces;
+using FlyCheap.API.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -11,10 +13,13 @@ builder.Services.AddControllers();
 // Configure CORS
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowLocalhost3000",
+    options.AddPolicy("AllowLocalhost",
         builder =>
         {
             builder.WithOrigins("http://localhost:3000")
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
+            builder.WithOrigins("http://localhost:3001")
                    .AllowAnyMethod()
                    .AllowAnyHeader();
         });
@@ -58,7 +63,7 @@ builder.Services.AddDbContext<FlyCheapDbContext>(options =>
 builder.Services.AddHttpClient();
 
 // Services
-builder.Services.AddTransient<IDbInitializer, DbInitializer>();
+builder.Services.AddServices();
 
 var app = builder.Build();
 
@@ -86,7 +91,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors("AllowLocalhost3000");
+app.UseCors("AllowLocalhost");
 
 app.UseAuthorization();
 

@@ -31,36 +31,34 @@ namespace FlyCheap.API.Controllers
                 return BadRequest("ClientId and ClientSecret are required.");
             }
 
-            using (var client = _httpClientFactory.CreateClient())
-            {
-                string url = _config["Amadeus:AuthTokenUrl"]!;
+            using var client = _httpClientFactory.CreateClient();
+            string uri = _config["Amadeus:AuthTokenUrl"]!;
 
-                var request = new HttpRequestMessage(HttpMethod.Post, url);
-                request.Headers.Accept.Clear();
-                request.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-                var content = new FormUrlEncodedContent(
-                [
-                    new KeyValuePair<string, string>("grant_type", "client_credentials"),
+            var request = new HttpRequestMessage(HttpMethod.Post, uri);
+            request.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+            var content = new FormUrlEncodedContent(
+            [
+                new KeyValuePair<string, string>("grant_type", "client_credentials"),
                     new KeyValuePair<string, string>("client_id", requestModel.ClientId),
                     new KeyValuePair<string, string>("client_secret", requestModel.ClientSecret)
-                ]);
-                request.Content = content;
+            ]);
+            request.Content = content;
 
-                HttpResponseMessage response;
-                try
-                {
-                    response = await client.SendAsync(request);
-                    var result = await response.Content.ReadAsStringAsync();
+            HttpResponseMessage response;
+            try
+            {
+                response = await client.SendAsync(request);
+                var result = await response.Content.ReadAsStringAsync();
 
-                    return response.IsSuccessStatusCode 
-                        ? Ok(result)
-                        : StatusCode((int)response.StatusCode, result);
-                }
-                catch (Exception ex) 
-                {
-                    _logger.LogError(string.Format("Error: {0}\nStackTrace: {1}", ex.Message, ex.StackTrace));
-                    return StatusCode(500, "Internal server error");
-                }
+                return response.IsSuccessStatusCode
+                    ? Ok(result)
+                    : StatusCode((int)response.StatusCode, result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(string.Format("Error: {0}\nStackTrace: {1}", ex.Message, ex.StackTrace));
+                return StatusCode(500, "Internal server error");
             }
         }
     }

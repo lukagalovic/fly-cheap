@@ -36,6 +36,6 @@ namespace FlyCheap.API.Helpers.Models
         public int? MaxPrice { get; set; }
 
         [Range(1, 250)]
-        public int? Max { get; set; } = 250;
+        public int? Max { get; set; } = 10;
     }
 }
