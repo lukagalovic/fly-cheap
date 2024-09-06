@@ -1,4 +1,4 @@
-# Sport Center Management System
+# Fly Cheap
 
 ## Prerequisites
 
