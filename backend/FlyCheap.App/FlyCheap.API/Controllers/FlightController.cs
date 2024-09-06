@@ -45,14 +45,23 @@ namespace FlyCheap.API.Controllers
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            //// pull from database here
-            //var existingResults = await _flightSearchResultService.GetFlightSearchResultsAsync(req);
-
-            //if (existingResults.Any())
+            //// Check if same search already exists in db
+            ////TODO
+            //try
             //{
-            //    return Ok(existingResults);
+            //    var existingResults = await _flightSearchResultService.GetFlightSearchResultsAsync(req);
+
+            //    if (existingResults.Any())
+            //    {
+            //        return Ok(existingResults);
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    _logger.LogError($"FlightController GetFlights: {ex.Message}\nStackTrace: {ex.StackTrace}");
             //}
 
+            // Send HTTP request
             using var client = _httpClientFactory.CreateClient();
             try
             {
@@ -69,13 +78,13 @@ namespace FlyCheap.API.Controllers
                 else
                 {
                     var error = await response.Content.ReadAsStringAsync();
-                    _logger.LogError($"FlightController GetFlightDestinations: {response.StatusCode} - {error}");
+                    _logger.LogError($"FlightController GetFlights: {response.StatusCode} - {error}");
                     return StatusCode((int)response.StatusCode, error);
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogError($"FlightController GetFlightDestinations: {ex.Message}\nStackTrace: {ex.StackTrace}");
+                _logger.LogError($"FlightController GetFlights: {ex.Message}\nStackTrace: {ex.StackTrace}");
                 return StatusCode(500, "Internal server error");
             }
         }

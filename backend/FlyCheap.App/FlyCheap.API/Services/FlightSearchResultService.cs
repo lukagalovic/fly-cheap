@@ -30,10 +30,8 @@ namespace FlyCheap.API.Services
             //                f.CurrencyCode == req.CurrencyCode)
             //    .ToListAsync();
             return await _ctx.FlightSearchResults
-                .Where(f => f.OriginIata == req.OriginLocationCode &&
-                            f.DestinationIata == req.DestinationLocationCode &&
-                            f.NumberOfPassengers == req.Adults &&
-                            f.CurrencyCode == req.CurrencyCode)
+                .Where(f => f.OriginIata.Trim().Equals(req.OriginLocationCode.Trim(), StringComparison.CurrentCultureIgnoreCase) &&
+                            f.DestinationIata.Trim().Equals(req.DestinationLocationCode.Trim(), StringComparison.CurrentCultureIgnoreCase))
                 .ToListAsync();
         }
     }

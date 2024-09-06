@@ -29,9 +29,9 @@ const FlightSearchForm = ({ onSubmit }: FlightSearchFormProps) => {
     setFormState((prevState) => ({
       ...prevState,
       [name]:
-        transformedValue === 'adults' || name === 'maxPrice'
-          ? parseInt(value) || undefined
-          : value,
+        name === 'adults' || name === 'maxPrice'
+          ? parseInt(transformedValue) || undefined
+          : transformedValue,
     }));
   };
 

@@ -33,13 +33,21 @@
    ```
 
 ## Application Flow
-1. Login with ```client_id``` and ```client_secret```.
+
+1. Login with ```client_id``` and ```client_secret``` which are provided by Amadeus API after registering on their website.
 2. Search for flights
 
 
 ## Debugging with IIS Express
+
 Application is also configured to be run and debugged inside Visual studio with IIS Express.
-After running ``` docker-compose up --build```
+After running ```docker-compose up --build```:
+1. Build and run application from Visual Studio using IIS Express
+2. Run
+   ```bash
+   npm run dev
+   ```
+   from frontend project directory ```root/frontend/web```
 
 ### On Build
 
