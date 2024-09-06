@@ -33,13 +33,13 @@
    ```
 
 ## Application Flow
-1. Login with ```bash client_id``` and ```bash client_secret```.
+1. Login with ```client_id``` and ```client_secret```.
 2. Search for flights
 
 
 ## Debugging with IIS Express
 Application is also configured to be run and debugged inside Visual studio with IIS Express.
-After running ```bash docker-compose up --build```
+After running ``` docker-compose up --build```
 
 ### On Build
 
