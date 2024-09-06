@@ -20,10 +20,16 @@ const FlightSearchForm = ({ onSubmit }: FlightSearchFormProps) => {
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     const { name, value } = e.target;
+
+    const transformedValue =
+      name === 'originLocationCode' || name === 'destinationLocationCode'
+        ? value.trim().toUpperCase()
+        : value;
+
     setFormState((prevState) => ({
       ...prevState,
       [name]:
-        name === 'adults' || name === 'maxPrice'
+        transformedValue === 'adults' || name === 'maxPrice'
           ? parseInt(value) || undefined
           : value,
     }));
